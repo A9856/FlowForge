@@ -31,10 +31,11 @@ export default function TaskCard({ task }: { task: Task }) {
             ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
             : undefined,
         }}
-        className={`rounded border p-3 text-sm bg-background
-          ${task.status === "done" ? "line-through text-red-500" : ""}
-        `}
+        className={`rounded border bg-background p-3 md:p-4 text-sm md:text-base
+    ${task.status === "done" ? "line-through text-red-500" : ""}
+  `}
       >
+
         {/* 🔹 DRAG HANDLE (ONLY THIS PART DRAGS) */}
         <div
           {...listeners}
@@ -62,7 +63,7 @@ export default function TaskCard({ task }: { task: Task }) {
         </div>
       </motion.div>
 
-      {/* 🔴 CONFIRM DELETE DIALOG */}
+      {/*  CONFIRM DELETE DIALOG */}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogHeader>

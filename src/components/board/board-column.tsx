@@ -16,10 +16,12 @@ export default function BoardColumn({
   return (
     <div
       ref={setNodeRef}
-      className={`rounded-lg p-3 space-y-3 border min-h-[300px]
-        ${isOver ? "bg-muted" : ""}`}
+      className={`rounded-lg p-3 space-y-3 border min-h-[70vh] transition
+        ${isOver ? "bg-muted" : "bg-background"}`}
     >
-      <h3 className="font-semibold">{title}</h3>
+      <h3 className="font-semibold text-sm md:text-base">
+        {title}
+      </h3>
 
       {tasks
         .filter((t) => t.status === status)
