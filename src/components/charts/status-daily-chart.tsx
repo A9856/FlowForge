@@ -9,8 +9,8 @@ import {
 
 export default function StatusDailyChart({ data }: { data: any[] }) {
   return (
-    <div className="h-72">
-      <ResponsiveContainer width="100%" height="100%">
+    <div className="w-full min-h-[260px] md:min-h-[320px]">
+      <ResponsiveContainer width="100%" height={300}>
         <LineChart data={data}>
           <XAxis dataKey="date" />
           <YAxis allowDecimals={false} />

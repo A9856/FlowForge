@@ -106,7 +106,7 @@ export default function Analytics() {
         </CardHeader>
 
         {/* ---------------- CONTENT ---------------- */}
-        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6 min-h-[350px]">
           {/* Pie / Donut Chart */}
           <StatusPieChart data={pieData} />
 
