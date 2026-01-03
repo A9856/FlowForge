@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
 import { useDraggable } from "@dnd-kit/core";
+import { useTaskStore } from "../../store/task-store";
+import type { Task } from "../../types/task";
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -11,52 +13,56 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 
-import { useTaskStore } from "../../store/task-store";
-import type { Task } from "../../types/task";
-
 export default function TaskCard({ task }: { task: Task }) {
-  const deleteTask = useTaskStore((s) => s.deleteTask);
+  const { deleteTask } = useTaskStore();
   const [open, setOpen] = useState(false);
 
   const { setNodeRef, listeners, attributes, transform } = useDraggable({
     id: task.id,
   });
 
-  const isDone = task.status === "done";
-
   return (
     <>
-      {/* TASK CARD */}
       <motion.div
         ref={setNodeRef}
-        {...listeners}
-        {...attributes}
         layout
         style={{
           transform: transform
             ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
             : undefined,
         }}
-        className="bg-white dark:bg-gray-700 rounded shadow p-2 text-sm cursor-grab space-y-2"
+        className={`rounded border p-3 text-sm bg-background
+          ${task.status === "done" ? "line-through text-red-500" : ""}
+        `}
       >
-        <p
-          className={
-            isDone
-              ? "text-red-500 line-through font-medium"
-              : "text-gray-800 dark:text-gray-100"
-          }
+        {/* 🔹 DRAG HANDLE (ONLY THIS PART DRAGS) */}
+        <div
+          {...listeners}
+          {...attributes}
+          className="cursor-grab font-medium"
         >
           {task.title}
-        </p>
+        </div>
 
-        {isDone && (
-          <Button variant="destructive" size="sm" onPointerDown={(e) => e.stopPropagation()}onClick={(e) => {e.stopPropagation();
-              setOpen(true);
-            }}>Delete</Button>
-        )}
+        <div className="flex justify-between items-center mt-2">
+          <span className="text-xs text-muted-foreground">
+            {new Date(task.createdAt).toLocaleDateString()}
+          </span>
+
+          {task.status === "done" && (
+            <Button
+              variant="destructive"
+              size="sm"
+              onPointerDown={(e) => e.stopPropagation()} // 🔥 IMPORTANT
+              onClick={() => setOpen(true)}             // ✅ WORKS NOW
+            >
+              Delete
+            </Button>
+          )}
+        </div>
       </motion.div>
 
-      {/* DELETE CONFIRMATION DIALOG */}
+      {/* 🔴 CONFIRM DELETE DIALOG */}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogHeader>
@@ -64,14 +70,21 @@ export default function TaskCard({ task }: { task: Task }) {
           </DialogHeader>
 
           <p className="text-sm text-muted-foreground">
-            Are you sure you want to delete this task?
+            Are you sure you want to permanently delete this task?
           </p>
 
           <DialogFooter>
             <Button variant="outline" onClick={() => setOpen(false)}>
               Cancel
             </Button>
-            <Button variant="destructive"onClick={() => {deleteTask(task.id);setOpen(false);}}>OK
+            <Button
+              variant="destructive"
+              onClick={() => {
+                deleteTask(task.id);
+                setOpen(false);
+              }}
+            >
+              OK
             </Button>
           </DialogFooter>
         </DialogContent>
