@@ -19,9 +19,9 @@ export default function Sidebar() {
             <NavLink to="/board">Board</NavLink>
           </Button>
 
-          <Button asChild variant="ghost" className="justify-start">
+          {/* <Button asChild variant="ghost" className="justify-start">
             <NavLink to="/analytics">Analytics</NavLink>
-          </Button>
+          </Button> */}
 
           <Button asChild variant="ghost" className="justify-start">
             <NavLink to="/settings">Settings</NavLink>

@@ -40,7 +40,7 @@ export default function TaskCard({ task }: { task: Task }) {
         <div
           {...listeners}
           {...attributes}
-          className="cursor-grab font-medium"
+          className="cursor-grab font-medium touch-none select-none"
         >
           {task.title}
         </div>
